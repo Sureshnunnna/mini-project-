@@ -3,37 +3,53 @@
 #include <string.h>
 #include <math.h>
 
-
 int main(int argc, char *argv[])
 {
-  float valueOne;
-  float valueTwo;
-  char operator;
-  float answer;
+    float valueOne;
+    float valueTwo;
+    char operator;
+    float answer;
 
-  printf("Enter calculation:\n\n");
-  scanf("%f %c %f", &valueOne, &operator, & valueTwo);
+    printf("Enter calculation (e.g., 5 + 2 or for square root enter r 9):\n\n");
+    scanf("%f %c %f", &valueOne, &operator, &valueTwo);
 
-  switch(operator)
+    switch (operator)
     {
-    case '/': answer = valueOne/valueTwo;
-      break;
-    case '*': answer = valueOne*valueTwo;
-      break;
-    case '+': answer = valueOne+valueTwo;
-      break;
-    case '-': answer = valueOne-valueTwo;
-      break;
-    case '^': answer = pow(valueOne,valueTwo);
-      break;
-    case ' ': answer = sqrt(valueTwo);
-      break;
-    default: goto fail;
+    case '/':
+        if (valueTwo == 0)
+        {
+            printf("Error: Division by zero is not allowed.\n");
+            return 1;
+        }
+        answer = valueOne / valueTwo;
+        break;
+    case '*':
+        answer = valueOne * valueTwo;
+        break;
+    case '+':
+        answer = valueOne + valueTwo;
+        break;
+    case '-':
+        answer = valueOne - valueTwo;
+        break;
+    case '^':
+        answer = pow(valueOne, valueTwo);
+        break;
+    case 'r':  // Using 'r' for square root operation
+        if (valueOne < 0)
+        {
+            printf("Error: Cannot take square root of a negative number.\n");
+            return 1;
+        }
+        answer = sqrt(valueOne);
+        printf("sqrt(%.9g) = %.6g\n", valueOne, answer);
+        return 0;
+    default:
+        printf("Error: Unknown operator '%c'.\n", operator);
+        return 1;
     }
-  printf("%.9g%c%.9g =  %.6g\n\n",valueOne,operator, valueTwo, answer);
-  goto exit;
- fail:
-  printf("Fail.\n");
- exit:
-  return 0;
+
+    // Print the result for binary operations
+    printf("%.9g %c %.9g = %.6g\n", valueOne, operator, valueTwo, answer);
+    return 0;
 }
