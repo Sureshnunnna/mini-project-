@@ -1,55 +1,67 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
+        h1 { text-align: center; }
+        .calculator { max-width: 300px; margin: auto; padding: 20px; background-color: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        input, button { width: 100%; margin: 5px 0; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+        button { background-color: #28a745; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #218838; }
+        #result { margin-top: 20px; font-size: 1.2em; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>Simple Calculator</h1>
+        <input type="number" id="num1" placeholder="Enter first number" required>
+        <input type="number" id="num2" placeholder="Enter second number" required>
+        <br>
+        <button onclick="calculate('+')">Add</button>
+        <button onclick="calculate('-')">Subtract</button>
+        <button onclick="calculate('*')">Multiply</button>
+        <button onclick="calculate('/')">Divide</button>
+        <h2 id="result">Result: </h2>
+    </div>
 
-int main(int argc, char *argv[])
-{
-    float valueOne;
-    float valueTwo;
-    char operator;
-    float answer;
+    <script>
+        function calculate(operation) {
+            const num1 = parseFloat(document.getElementById("num1").value);
+            const num2 = parseFloat(document.getElementById("num2").value);
+            let result;
 
-    printf("Enter calculation (e.g., 5 + 2 or for square root enter r 9):\n\n");
-    scanf("%f %c %f", &valueOne, &operator, &valueTwo);
+            if (isNaN(num1) || isNaN(num2)) {
+                alert("Please enter valid numbers.");
+                return;
+            }
 
-    switch (operator)
-    {
-    case '/':
-        if (valueTwo == 0)
-        {
-            printf("Error: Division by zero is not allowed.\n");
-            return 1;
+            switch (operation) {
+                case '+':
+                    result = num1 + num2;
+                    break;
+                case '-':
+                    result = num1 - num2;
+                    break;
+                case '*':
+                    result = num1 * num2;
+                    break;
+                case '/':
+                    if (num2 === 0) {
+                        alert("Cannot divide by zero.");
+                        return;
+                    }
+                    result = num1 / num2;
+                    break;
+                default:
+                    alert("Invalid operation.");
+                    return;
+            }
+
+            document.getElementById("result").innerText = "Result: " + result;
         }
-        answer = valueOne / valueTwo;
-        break;
-    case '*':
-        answer = valueOne * valueTwo;
-        break;
-    case '+':
-        answer = valueOne + valueTwo;
-        break;
-    case '-':
-        answer = valueOne - valueTwo;
-        break;
-    case '^':
-        answer = pow(valueOne, valueTwo);
-        break;
-    case 'r':  // Using 'r' for square root operation
-        if (valueOne < 0)
-        {
-            printf("Error: Cannot take square root of a negative number.\n");
-            return 1;
-        }
-        answer = sqrt(valueOne);
-        printf("sqrt(%.9g) = %.6g\n", valueOne, answer);
-        return 0;
-    default:
-        printf("Error: Unknown operator '%c'.\n", operator);
-        return 1;
-    }
-
-    // Print the result for binary operations
-    printf("%.9g %c %.9g = %.6g\n", valueOne, operator, valueTwo, answer);
-    return 0;
-}
+    </script>
+</body>
+</html>
